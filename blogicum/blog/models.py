@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from core.models import PublishedModel
 
 
-class Category(PublishedModel):
+class Category(models.Model):
     title = models.CharField(max_length=256, verbose_name='Заголовок')
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
@@ -11,6 +10,15 @@ class Category(PublishedModel):
         verbose_name='Слаг',
         help_text='''Идентификатор страницы для URL;
         разрешены символы латиницы, цифры, дефис и подчёркивание.''')
+    is_published = models.BooleanField(
+        default=True,
+        verbose_name='Опубликовано',
+        help_text='Снимите галочку, чтобы скрыть публикацию.'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Добавлено'
+    )
 
     class Meta:
         verbose_name = 'категория'
@@ -20,8 +28,17 @@ class Category(PublishedModel):
         return self.title
 
 
-class Location(PublishedModel):
+class Location(models.Model):
     name = models.CharField(max_length=256, verbose_name='Название места')
+    is_published = models.BooleanField(
+        default=True,
+        verbose_name='Опубликовано',
+        help_text='Снимите галочку, чтобы скрыть публикацию.'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Добавлено'
+    )
 
     class Meta:
         verbose_name = 'местоположение'
@@ -31,7 +48,7 @@ class Location(PublishedModel):
         return self.name
 
 
-class Post(PublishedModel):
+class Post(models.Model):
     title = models.CharField(max_length=256, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
@@ -57,6 +74,15 @@ class Post(PublishedModel):
         null=True,
         related_name='type',
         verbose_name='Категория'
+    )
+    is_published = models.BooleanField(
+        default=True,
+        verbose_name='Опубликовано',
+        help_text='Снимите галочку, чтобы скрыть публикацию.'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Добавлено'
     )
 
     class Meta:
