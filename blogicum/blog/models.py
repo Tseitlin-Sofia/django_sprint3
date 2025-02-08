@@ -26,8 +26,8 @@ class Category(PublishedModel):
     slug = models.SlugField(
         unique=True,
         verbose_name='Идентификатор',
-        help_text='Идентификатор страницы для URL; разрешены символы латиницы, '
-        'цифры, дефис и подчёркивание.')
+        help_text='Идентификатор страницы для URL; '
+        'разрешены символы латиницы, цифры, дефис и подчёркивание.')
 
     class Meta:
         verbose_name = 'категория'
