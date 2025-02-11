@@ -4,8 +4,11 @@ from django.shortcuts import get_object_or_404, render
 from blog.models import Post, Category
 
 
+QUANTITY_POST = 5
+
+
 def post_list():
-    post_list = Post.objects.select_related(
+    return Post.objects.select_related(
         'category',
         'location',
         'author'
@@ -14,12 +17,11 @@ def post_list():
         category__is_published=True,
         pub_date__lte=datetime.now()
     )
-    return post_list
 
 
 def index(request):
     template = 'blog/index.html'
-    context = {'post_list': post_list()[:5]}
+    context = {'post_list': post_list()[:QUANTITY_POST]}
     return render(request, template, context)
 
 

@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 
 
 User = get_user_model()
+MAX_LENGTH = 256
 
 
 class PublishedModel(models.Model):
@@ -21,7 +22,7 @@ class PublishedModel(models.Model):
 
 
 class Category(PublishedModel):
-    title = models.CharField(max_length=256, verbose_name='Заголовок')
+    title = models.CharField(max_length=MAX_LENGTH, verbose_name='Заголовок')
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
         unique=True,
@@ -35,7 +36,7 @@ class Category(PublishedModel):
 
 
 class Location(PublishedModel):
-    name = models.CharField(max_length=256, verbose_name='Название места')
+    name = models.CharField(max_length=MAX_LENGTH, verbose_name='Название места')
 
     class Meta:
         verbose_name = 'местоположение'
@@ -43,7 +44,7 @@ class Location(PublishedModel):
 
 
 class Post(PublishedModel):
-    title = models.CharField(max_length=256, verbose_name='Заголовок')
+    title = models.CharField(max_length=MAX_LENGTH, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
         verbose_name='Дата и время публикации',
@@ -52,14 +53,14 @@ class Post(PublishedModel):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        verbose_name='Автор публикации',
-        related_name='posts'
+        related_name='posts',
+        verbose_name='Автор публикации'
     )
     location = models.ForeignKey(
         Location,
         on_delete=models.SET_NULL,
         null=True,
-        related_name='place',
+        related_name='posts',
         verbose_name='Местоположение'
     )
     category = models.ForeignKey(
@@ -73,3 +74,4 @@ class Post(PublishedModel):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
+        ordering = ['-pub_date',]
